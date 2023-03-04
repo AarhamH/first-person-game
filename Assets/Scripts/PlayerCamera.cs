@@ -12,12 +12,14 @@ public class PlayerCamera : MonoBehaviour
     float xRotation;
     float yRotation;
 
-    private void Start() {
+    private void Start() 
+    {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-    private void Update() {
+    private void Update() 
+    {
         float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
         float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
 
