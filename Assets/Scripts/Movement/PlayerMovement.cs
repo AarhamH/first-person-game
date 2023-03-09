@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    Animator animator;
+    float animationPlayTransition = 0f;
+    float animationSmoothTime = 0.1f;
+    
     [Header("Movement")]
     private float moveSpeed;
     public float walkSpeed = 7f;
@@ -53,6 +57,7 @@ public class PlayerMovement : MonoBehaviour
     public MovementState state;
     public enum MovementState
     {
+        Idle,
         Walking,
         Sprinting,
         Dashing,
@@ -63,6 +68,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
+        Transform arms = transform.Find("PlayerObj/ArmsPivot/FPSArms");
+        animator = arms.GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
@@ -77,6 +84,7 @@ public class PlayerMovement : MonoBehaviour
         MyInput();
         SpeedControl();
         StateHandler();
+        AnimationHandler();
 
         // handle drag
         if (state == MovementState.Walking || state == MovementState.Sprinting)
@@ -113,8 +121,14 @@ public class PlayerMovement : MonoBehaviour
             state = MovementState.Dashing;
             desiredMoveSpeed = dashSpeed;
             speedChangeFactor = dashSpeedChangeFactor;
+            animator.Play("Armature|Dash");
         }
 
+        else if(rb.velocity.x == 0f && rb.velocity.z == 0)
+        {
+           state = MovementState.Idle;
+           desiredMoveSpeed = walkSpeed; 
+        }
         else if(grounded && Input.GetKey(sprintKey))
         {
            state = MovementState.Sprinting; 
@@ -130,6 +144,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             state = MovementState.Air;
+
             if(desiredMoveSpeed < sprintSpeed)
             {
                 desiredMoveSpeed = walkSpeed;
@@ -266,6 +281,47 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 GetSlopeMoveDirection()
     {
         return Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
+    }
+
+    private void AnimationHandler()
+    {
+        if(state == MovementState.Idle)
+        {
+            animator.SetBool("isIdle", true);
+            animator.SetBool("isWalking", false);
+            animator.SetBool("isRunning", false);
+            animator.SetBool("isAir", false);
+            animator.SetBool("isDashing", false);
+
+        }
+
+        else if(state == MovementState.Walking)
+        {
+            animator.SetBool("isIdle", false);
+            animator.SetBool("isWalking", true);
+            animator.SetBool("isRunning", false);
+            animator.SetBool("isAir", false);
+            animator.SetBool("isDashing", false);
+        }
+
+        else if(state == MovementState.Sprinting)
+        {
+            animator.SetBool("isIdle", false);
+            animator.SetBool("isWalking", false);
+            animator.SetBool("isRunning", true);
+            animator.SetBool("isAir", false);
+            animator.SetBool("isDashing", false);
+        }
+
+        else if(state == MovementState.Air)
+        {
+            animator.SetBool("isIdle", false);
+            animator.SetBool("isWalking", false);
+            animator.SetBool("isRunning", false);
+            animator.SetBool("isAir", true);
+            animator.SetBool("isDashing", false);      
+        }
+
     }
 
 }

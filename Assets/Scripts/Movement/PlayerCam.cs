@@ -8,6 +8,9 @@ public class PlayerCam : MonoBehaviour
     public float sensY = 200f;
 
     public Transform orientation;
+    public GameObject player;
+    private Transform armsPivot;
+    private Transform cameraPos;
 
     float xRotation;
     float yRotation;
@@ -16,6 +19,12 @@ public class PlayerCam : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        armsPivot = player.transform.Find("PlayerObj/ArmsPivot");
+        cameraPos = player.transform.Find("CameraPos");
+        orientation = player.transform.Find("PlayerObj/Orientation");
+        
+        armsPivot.transform.position = cameraPos.transform.position;
     }
 
     private void Update()
@@ -32,5 +41,6 @@ public class PlayerCam : MonoBehaviour
         // rotate cam and orientation
         transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         orientation.rotation = Quaternion.Euler(0, yRotation, 0);
+        armsPivot.rotation = Quaternion.Euler(xRotation, yRotation, 0);
     }
 }
