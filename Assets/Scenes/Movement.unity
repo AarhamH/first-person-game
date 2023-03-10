@@ -1395,6 +1395,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 7
   sprintSpeed: 15
+  swingSpeed: 17
   dashSpeed: 25
   dashSpeedChangeFactor: 25
   groundDrag: 5
@@ -1412,6 +1413,7 @@ MonoBehaviour:
   orientation: {fileID: 1231071163}
   state: 0
   isDashing: 0
+  isSwinging: 0
 --- !u!114 &1623225825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1452,7 +1454,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d2f14512a8d8afe479e3d009e533aee2, type: 2}
+  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1496,16 +1498,16 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0.0603773, b: 0.0603773, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 0, g: 0, b: 0, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 1542
-      ctime1: 56861
+      ctime0: 0
+      ctime1: 38936
       ctime2: 0
       ctime3: 0
       ctime4: 0
@@ -1550,7 +1552,13 @@ MonoBehaviour:
   whatIsGrappleable:
     serializedVersion: 2
     m_Bits: 2048
-  swingKey: 323
+  pm: {fileID: 0}
+  orientation: {fileID: 1231071163}
+  rb: {fileID: 0}
+  horizontalThrust: 2000
+  forwardThrust: 3000
+  extendCableSpeed: 20
+  swingKey: 324
 --- !u!1001 &1690289507
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1888,7 +1896,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh22148
+  m_Name: pb_Mesh22138
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

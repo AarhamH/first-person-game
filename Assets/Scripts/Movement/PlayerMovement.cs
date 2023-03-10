@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     private float moveSpeed;
     public float walkSpeed = 7f;
     public float sprintSpeed = 11f;
+    public float swingSpeed = 200f;
 
     private float desiredMoveSpeed;
     private float lastDesiredMoveSpeed;
@@ -61,10 +62,12 @@ public class PlayerMovement : MonoBehaviour
         Walking,
         Sprinting,
         Dashing,
+        Swinging,
         Air
     }
 
     public bool isDashing;
+    public bool isSwinging;
 
     private void Start()
     {
@@ -122,6 +125,12 @@ public class PlayerMovement : MonoBehaviour
             desiredMoveSpeed = dashSpeed;
             speedChangeFactor = dashSpeedChangeFactor;
             animator.Play("Armature|Dash");
+        }
+
+        else if(isSwinging)
+        {
+            state = MovementState.Swinging;
+            desiredMoveSpeed = swingSpeed;
         }
 
         else if(rb.velocity.x == 0f && rb.velocity.z == 0)
@@ -202,6 +211,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
+        if(isSwinging) { return; }
         // calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
